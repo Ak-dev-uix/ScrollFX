@@ -279,33 +279,86 @@
       (Upload any MP4/WebM video → it will auto-extract frames and download as a ZIP.)
     </p>
 
-    <h2>🧩 Basic Usage</h2>
-    <p>Create a scroll section and define data attributes:</p>
-    <pre><code>&lt;section class="scroll-section"
-  data-folder="frames"
-  data-name="frame_"
+<h2>🎬 Single Section Demo</h2>
+<p>A minimal ScrollFX setup with one animated section:</p>
+<pre><code>&lt;section class="scroll-section"
+  data-scrollfx
+  data-folder="shell"
+  data-name="shell-"
+  data-frames="636"
+  data-ext="webp"
+  data-length="3"
+  data-bg="shell/shell-001.webp"
+  data-section="1"&gt;
+  &lt;canvas&gt;&lt;/canvas&gt;
+&lt;/section&gt;
+
+&lt;script src="https://unpkg.com/gsap@3/dist/gsap.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/gh/Ak-dev-uix/ScrollFX/scrollfx.min.js"&gt;&lt;/script&gt;</code></pre>
+
+<p style="color:#aaa;font-size:0.9rem;">
+This example creates a single pinned scroll animation where the frames play smoothly as you scroll.
+</p>
+
+<h2>🧱 Multiple Sections Demo</h2>
+<p>You can add more sections on the same page — ScrollFX automatically handles them independently:</p>
+
+<pre><code>&lt;section class="scroll-section"
+  data-scrollfx
+  data-folder="intro"
+  data-name="intro-"
   data-frames="150"
   data-ext="jpg"
-  data-length="4"&gt;
+  data-length="3"
+  data-bg="intro/intro-001.jpg"
+  data-section="1"&gt;
   &lt;canvas&gt;&lt;/canvas&gt;
-&lt;/section&gt;</code></pre>
+&lt;/section&gt;
 
-    <p>Now simply initialize ScrollFX — it automatically reads your attributes and syncs animation with scroll.</p>
+&lt;section class="scroll-section"
+  data-scrollfx
+  data-folder="product"
+  data-name="product-"
+  data-frames="220"
+  data-ext="jpg"
+  data-length="4"
+  data-bg="product/product-0001.jpg"
+  data-section="2"&gt;
+  &lt;canvas&gt;&lt;/canvas&gt;
+&lt;/section&gt;
 
-    <a href="index.html" class="btn">View Live Demo</a>
+&lt;script src="https://unpkg.com/gsap@3/dist/gsap.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/gh/Ak-dev-uix/ScrollFX/scrollfx.min.js"&gt;&lt;/script&gt;</code></pre>
 
-    <h2>⚙️ Available Attributes</h2>
-    <table>
-      <tr>
-        <th>Attribute</th>
-        <th>Description</th>
-      </tr>
-      <tr><td><code>data-folder</code></td><td>Path to your frames folder</td></tr>
-      <tr><td><code>data-name</code></td><td>Base name of images (e.g. frame_)</td></tr>
-      <tr><td><code>data-frames</code></td><td>Total number of frames</td></tr>
-      <tr><td><code>data-ext</code></td><td>File extension (jpg/png/webp)</td></tr>
-      <tr><td><code>data-length</code></td><td>Zero padding length (e.g. 3 → 001, 4 → 0001)</td></tr>
-    </table>
+<p style="color:#aaa;font-size:0.9rem;">
+Each section scrolls and animates independently — perfect for cinematic storytelling pages.
+</p>
+
+<p>Now simply initialize <b>ScrollFX</b> — it automatically reads all attributes and syncs the animation with scroll position.</p>
+
+<a href="https://incomparable-zabaione-91f6cf.netlify.app" class="btn">View Live Demo of Single Sections</a>
+<a href="https://incomparable-zabaione-91f6cf.netlify.app/multiple-section" class="btn">View Live Demo of Multiple Sections</a>
+
+
+
+<h2>⚙️ Available Attributes</h2>
+<table>
+  <tr>
+    <th>Attribute</th>
+    <th>Description</th>
+  </tr>
+  <tr><td><code>data-scrollfx</code></td><td>Required — identifies a section for ScrollFX initialization.</td></tr>
+  <tr><td><code>data-folder</code></td><td>Path to your frames folder (e.g. <code>shell</code>).</td></tr>
+  <tr><td><code>data-name</code></td><td>Base filename prefix (e.g. <code>shell-</code> → shell-001.webp).</td></tr>
+  <tr><td><code>data-frames</code></td><td>Total number of frames to animate through.</td></tr>
+  <tr><td><code>data-ext</code></td><td>Frame image format (e.g. jpg, png, webp).</td></tr>
+  <tr><td><code>data-length</code></td><td>Zero-padding length for filenames (e.g. <code>4</code> → 0001).</td></tr>
+  <tr><td><code>data-bg</code></td><td>Optional fallback background image shown before/after animation.</td></tr>
+  <tr><td><code>data-section</code></td><td>Optional unique ID for debugging or multiple ScrollFX sections.</td></tr>
+</table>
+
 
     <h2>✨ Features</h2>
     <ul>
