@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ScrollFX</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(circle at center, #0c0c0c, #000);
+      color: #fff;
+      font-family: "Poppins", sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+    }
+
+    .logo:hover {
+      text-shadow: 0 0 20px rgba(255, 255, 255, 1);
+      transform: scale(1.05);
+    }
+
+    /* Desktop Nav */
+    nav.desktop-nav {
+      display: none;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 25px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    .nav-links a:hover::before {
+      left: 100%;
+    }
+
+    .nav-links a:hover {
+      transform: translateY(-2px);
+      text-shadow: 0 0 10px rgba(255,255,255,0.5);
+    }
+
+    /* Hamburger */
+    .mobile-menu-btn {
+      display: block;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.6rem;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      z-index: 1001;
+    }
+
+    .mobile-menu-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.1);
+    }
+
+    /* Mobile Nav */
+    .mobile-nav {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 300px;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border-left: 1px solid rgba(255,255,255,0.1);
+      z-index: 999;
+      padding: 80px 30px 30px;
+      transition: right 0.3s ease;
+    }
+
+    .mobile-nav.active {
+      right: 0;
+    }
+
+    .mobile-nav-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .mobile-nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .mobile-nav-links a:hover {
+      background: rgba(255,255,255,0.1);
+      transform: translateX(10px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    /* Overlay */
+    .mobile-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 998;
+    }
+
+    .mobile-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Scroll Section */
+    .scroll-section {
+      height: 400vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: 0;
+      background:url(./shell/shell-001.webp);
+    }
+
+    .overlay-text {
+      position: fixed;
+      z-index: 10;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: 2px;
+      text-shadow: 0 0 20px rgba(255,255,255,0.6);
+      animation: pulse 3s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+    }
+
+    @media (max-width: 768px) {
+      .overlay-text {
+        font-size: 1rem;
+        padding: 0 20px;
+      }
+      .mobile-nav {
+        width: 100%;
+        max-width: 320px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .overlay-text {
+        font-size: 1rem;
+        padding: 0 15px;
+      }
+    }
+    @media (max-width: 904px) {
+      .overlay-text {
+        font-size: 1rem;
+        padding: 0 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="#" class="logo">ScrollFX Js</a>
+    <!-- Always visible Hamburger -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+      <i class="fas fa-bars" id="menuIcon"></i>
+    </button>
+  </header>
+
+  <!-- Mobile Navigation -->
+  <nav class="mobile-nav" id="mobileNav">
+    <br/>
+    <br/>
+    <ul class="mobile-nav-links">
+      <li><a href="docs.html"><i class="fas fa-book"></i> Documentation</a></li>
+      <li><a href="https://github.com/Ak-dev-uix/ScrollFX" target="_blank"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://ak-folio.netlify.app" target="_blank"><i class="fas fa-user"></i> Portfolio</a></li>
+    </ul>
+  </nav>
+
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+
+  <section class="scroll-section" 
+    data-folder="shell" 
+    data-name="shell-" 
+    data-frames="636" 
+    data-ext="webp" 
+    data-length="3">
+    <canvas></canvas>
+    <br/><br/><br/>
+    <div class="overlay-text">
+      Created by Ak.Dev<br/>
+      Scroll to explore the animation effect.<br/>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script src="scrollfx.min.js"></script>
+
+  <script>
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    const mobileOverlay = document.getElementById('mobileOverlay');
+    const menuIcon = document.getElementById('menuIcon');
+    let isMenuOpen = false;
+
+    function toggleMenu() {
+      isMenuOpen = !isMenuOpen;
+      mobileNav.classList.toggle('active', isMenuOpen);
+      mobileOverlay.classList.toggle('active', isMenuOpen);
+      menuIcon.classList.toggle('fa-times', isMenuOpen);
+      menuIcon.classList.toggle('fa-bars', !isMenuOpen);
+      document.body.style.overflow = isMenuOpen ? 'hidden' : 'auto';
+    }
+
+    mobileMenuBtn.addEventListener('click', toggleMenu);
+    mobileOverlay.addEventListener('click', toggleMenu);
+  </script>
+
+</body>
+</html>
